@@ -10,7 +10,7 @@
 - name: Install the mysql packages in Debian derivatives
   apt: name={{ item }} state=installed update_cache=yes
   with_items: '{{ mysql_pkgs }}'
-  environment: env
+  environment: '{{ env }''
   when: ansible_os_family == 'Debian'
 
 - name: Copy the my.cnf file 
@@ -25,6 +25,7 @@
 
 - name: Start the mysql services Redhat
   service: name={{ mysql_service }} state=started enabled=yes
+  when: ansible_os_family == 'RedHat'
 
 - name: update mysql root password for all root accounts
   mysql_user: name=root host={{ item }} password={{ mysql_root_db_pass }}
